@@ -1,0 +1,52 @@
+
+
+#titleJumbotron {
+  /*  background-image: url(../images/trainstation.jpg); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    height: 250px; */
+}
+
+/* Body*/
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Heading*/
+.title{
+    /* background: #3bafba; */
+    background: #619B83;
+    padding: 10px 0px 10px 10px;
+    color: white;
+
+}
+
+/* Table*/
+thead {
+    border-bottom: 1px solid #000000;
+    background-color: #d3d3d3
+}
+
+tr {
+    border-top: 1px solid #000000;
+}
+  
+th{
+    padding: 0 4em 0 0;
+}
+
+.tableEntry {
+    color: #767A79;
+}
+
+#submit {
+    width: auto;
+    background-color: #619B83;
+    color: white;
+    justify-self: center;
+}
+/* Form */
+input {
+    width: 100%;
+}

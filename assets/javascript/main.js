@@ -1,5 +1,5 @@
-  // Firebase configuration
-  var firebaseConfig = {
+// Firebase configuration
+var firebaseConfig = {
     apiKey: "AIzaSyBLzUUhgIhHAxPc__xEcRUaZQ_AjqH4SYs",
     authDomain: "train-scheduler-3145d.firebaseapp.com",
     databaseURL: "https://train-scheduler-3145d.firebaseio.com",
@@ -8,13 +8,13 @@
     messagingSenderId: "352699456061",
     appId: "1:352699456061:web:7e914cde9a7f1548df6854",
     measurementId: "G-S1PLPX9JZB"
-  };
+};
 
 
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  //firebase.analytics();
+ // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
   var database = firebase.database();
 
@@ -39,30 +39,27 @@
         return;
       };
 
-database.ref().push({
-    trainName,
-    destination,
-    firstTrain,
-    frequency
-  });
-console.log("hello")
+    database.ref().push({
+        trainName,
+        destination,
+        firstTrain,
+        frequency
+    });
+
+    console.log("hello")
+
+    document.getElementById("myform").reset();
   
 });
 
 database.ref().on("child_added", function(snapshot) {
- console.log(snapshot.val());
- var data = snapshot.val();
+    console.log(snapshot.val());
+    var data = snapshot.val();
 
-
-    //var today = moment();
-    //moment.duration().asMinutes()
-
-    
-
+    // Frequency
     var tFrequency = data.frequency;
 
-    // Time is 3:30 AM
-    
+    // First train time
     var firstTime = data.firstTrain;
 
     // First Time (pushed back 1 year to make sure it comes before current time)
@@ -91,20 +88,24 @@ database.ref().on("child_added", function(snapshot) {
 
 
 
-//var monthDiff = today.diff(startDate, 'months');
-//console.log("Month:", monthDiff);
- 
-//var totalBilled = data.monthlyInput * monthDiff;
+    var tableRow = $("<tr id='row'>").append(
+        $("<td>").text(data.trainName),
+        $("<td>").text(data.destination),
+        $("<td>").text(data.frequency),
+        $("<td>").text(moment(nextTrain).format("HH:mm")),
+        $("<td>").text(tMinutesTillTrain),
+        $("<td><i class='far fa-edit edit' id='editIcon'></i></td>"),
+        $("<td><i class='far fa-trash-alt trash' id='trashIcon' data-key="+snapshot.key+"></i></tr>")
 
-var tableRow = $("<tr>").append(
-    $("<td>").text(data.trainName),
-    $("<td>").text(data.destination),
-    $("<td>").text(data.frequency),
-    $("<td>").text(moment(nextTrain).format("HH:mm")),
-    $("<td>").text(tMinutesTillTrain)
-//   $("<td>").text(monthDiff * data.rate)
-  );
+    );
 
+    $("#trainTable").append(tableRow);
 
- $("#trainTable").append(tableRow);
-  });
+});
+
+$(document).on("click",".trash", function(event) {
+    let currKey = $(this).attr("data-key");
+    let trainRef=database.ref(currKey);
+    trainRef.remove();
+    $(this).closest('tr').remove()
+});
