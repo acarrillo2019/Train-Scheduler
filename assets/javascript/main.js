@@ -54,9 +54,12 @@ database.ref().on("child_added", function(snapshot) {
  var data = snapshot.val();
 // var tableRow = $("<tr>");
 
- var today = moment();
-// var startDate = moment(data.startInput);
-// var monthDiff = today.diff(startDate, 'months');
+var today = moment();
+//moment.duration().asMinutes()
+moment(firstTrain).format("HH:mm")
+var trainFreq = moment(data.firstTrain);
+
+//var monthDiff = today.diff(startDate, 'months');
 //console.log("Month:", monthDiff);
  
 //var totalBilled = data.monthlyInput * monthDiff;
