@@ -52,12 +52,44 @@ console.log("hello")
 database.ref().on("child_added", function(snapshot) {
  console.log(snapshot.val());
  var data = snapshot.val();
-// var tableRow = $("<tr>");
 
-var today = moment();
-//moment.duration().asMinutes()
-moment(firstTrain).format("HH:mm")
-var trainFreq = moment(data.firstTrain);
+
+    //var today = moment();
+    //moment.duration().asMinutes()
+
+    
+
+    var tFrequency = data.frequency;
+
+    // Time is 3:30 AM
+    
+    var firstTime = data.firstTrain;
+
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % tFrequency;
+    console.log(tRemainder);
+
+    // Minute Until Train
+    var tMinutesTillTrain = tFrequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+
+
 
 //var monthDiff = today.diff(startDate, 'months');
 //console.log("Month:", monthDiff);
@@ -67,9 +99,9 @@ var trainFreq = moment(data.firstTrain);
 var tableRow = $("<tr>").append(
     $("<td>").text(data.trainName),
     $("<td>").text(data.destination),
-    $("<td>").text(data.firstTrain),
     $("<td>").text(data.frequency),
-//    $("<td>").text(monthDiff),
+    $("<td>").text(moment(nextTrain).format("HH:mm")),
+    $("<td>").text(tMinutesTillTrain)
 //   $("<td>").text(monthDiff * data.rate)
   );
 
