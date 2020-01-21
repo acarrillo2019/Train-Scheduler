@@ -20,9 +20,27 @@ firebase.analytics();
 
   console.log(database);
 
-  const isEmpty = function(str) {
- return str.trim() === '';
+  var trainName = "";
+  var destination = "";
+  var firstTrain = "";
+  var frequency = 0;
+
+// Sets and displays current date and time on page
+  function updateClock() {
+    $("#currentDate").text(moment().format("MMMM Do YYYY HH:mm"));
+
+    setTimeout(updateClock, 1000);
+  };
+
+  updateClock();
+
+// Checks if string is empty
+const isEmpty = function(str) {
+    return str.trim() === '';
 };
+
+
+
 
   $("#submitButton").on("click", function(event) {
     event.preventDefault();
@@ -52,30 +70,33 @@ firebase.analytics();
   
 });
 
+
+// Manipulates and displays data from Firebase
 database.ref().on("child_added", function(snapshot) {
+   
     console.log(snapshot.val());
-    var data = snapshot.val();
+    let data = snapshot.val();
 
     // Frequency
-    var tFrequency = data.frequency;
+    let tFrequency = data.frequency;
 
     // First train time
-    var firstTime = data.firstTrain;
+    let firstTime = data.firstTrain;
 
     // First Time (pushed back 1 year to make sure it comes before current time)
-    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    let firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
     // Current Time
-    var currentTime = moment();
+    let currentTime = moment();
     console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
     // Difference between the times
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    let diffTime = moment().diff(moment(firstTimeConverted), "minutes");
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
+    let tRemainder = diffTime % tFrequency;
     console.log(tRemainder);
 
     // Minute Until Train
@@ -83,26 +104,32 @@ database.ref().on("child_added", function(snapshot) {
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    let nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 
 
-
+// Appends data to website
     var tableRow = $("<tr id='row'>").append(
         $("<td>").text(data.trainName),
         $("<td>").text(data.destination),
         $("<td>").text(data.frequency),
-        $("<td>").text(moment(nextTrain).format("HH:mm")),
-        $("<td>").text(tMinutesTillTrain),
+        $("<td class='arrTime'>").text(moment(nextTrain).format("HH:mm")),
+        $("<td class='mins'> data-key="+snapshot.key+"").text(tMinutesTillTrain),
         $("<td><i class='far fa-edit edit' id='editIcon'></i></td>"),
         $("<td><i class='far fa-trash-alt trash' id='trashIcon' data-key="+snapshot.key+"></i></tr>")
-
     );
 
     $("#trainTable").append(tableRow);
-
 });
 
+
+  
+
+   
+ 
+
+
+// Deletes data from Firebase and website
 $(document).on("click",".trash", function(event) {
     let currKey = $(this).attr("data-key");
     let trainRef=database.ref(currKey);
