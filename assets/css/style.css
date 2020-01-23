@@ -16,7 +16,7 @@ body {
 /* Heading*/
 .title{
     /* background: #3bafba; */
-    background: #619B83;
+    background: rgb(52, 105, 221);
     padding: 10px 0px 10px 10px;
     color: white;
 
@@ -37,7 +37,7 @@ th{
 }
 
 .tableEntry {
-    color: #767A79;
+    color: rgb(103, 160, 212);
 }
 
 #submit {
