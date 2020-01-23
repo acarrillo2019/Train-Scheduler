@@ -1,11 +1,23 @@
 
 
 #titleJumbotron {
-  /*  background-image: url(../images/trainstation.jpg); 
+    background-image: url(../images/steam_engine.jpg); 
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center top;
-    height: 250px; */
+    background-position: center;
+    height: 350px;
+    color: white;
+}
+
+
+
+#block {
+    background-color: black;
+    opacity: .7;
+   position: relative;
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Body*/
@@ -19,6 +31,11 @@ body {
     background: rgb(52, 105, 221);
     padding: 10px 0px 10px 10px;
     color: white;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
 
 }
 
