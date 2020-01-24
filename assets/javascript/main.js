@@ -111,14 +111,14 @@ database.ref().on("child_added", function(snapshot) {
 // Appends data to website
     var tableRow = $("<tr id='row'>").append(
         $("<td class='row_data'>").text(data.trainName),
-        $("<td class='row_data'>").text(data.destination),
-        $("<td class='row_data'>").text(data.frequency),
-        $("<td class='arrTime'>").text(moment(nextTrain).format("HH:mm")),
-        $("<td class='mins'> data-key="+snapshot.key+"").text(tMinutesTillTrain),
-        $("<td><i class='far fa-edit edit' id='editIcon'></i></td>"),
-        $("<td><i class='far fa-save btn_save' id='saveIcon'></i></td>"),
-        $("<td><i class='fas fa-eject btn_cancel' id='cancelIcon'></i></td>"),
-        $("<td><i class='far fa-trash-alt trash' id='trashIcon' data-key="+snapshot.key+"></i></tr>")
+        $("<td class='row_data text-center'>").text(data.destination),
+        $("<td class='row_data text-center'>").text(data.frequency),
+        $("<td class='arrTime text-center'>").text(moment(nextTrain).format("HH:mm")),
+        $("<td class='mins text-center'> data-key="+snapshot.key+"").text(tMinutesTillTrain),
+        $("<td class='text-center'><i class='far fa-edit edit' id='editIcon'></i></td>"),
+        $("<td class='text-center'><i class='far fa-save btn_save' id='saveIcon'></i></td>"),
+        $("<td class='text-center'><i class='fas fa-eject btn_cancel' id='cancelIcon'></i></td>"),
+        $("<td class='text-center'><i class='far fa-trash-alt trash' id='trashIcon' data-key="+snapshot.key+"></i></tr>")
     );
 
     $("#trainTable").append(tableRow);
