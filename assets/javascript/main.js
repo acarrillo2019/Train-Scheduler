@@ -10,8 +10,6 @@ var firebaseConfig = {
     measurementId: "G-S1PLPX9JZB"
 };
 
-
-
  // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
@@ -38,9 +36,6 @@ firebase.analytics();
 const isEmpty = function(str) {
     return str.trim() === '';
 };
-
-
-
 
   $("#submitButton").on("click", function(event) {
     event.preventDefault();
@@ -114,7 +109,7 @@ database.ref().on("child_added", function(snapshot) {
         $("<td class='row_data text-center'>").text(data.destination),
         $("<td class='row_data text-center'>").text(data.frequency),
         $("<td class='arrTime text-center'>").text(moment(nextTrain).format("HH:mm")),
-        $("<td class='mins text-center'> data-key="+snapshot.key+"").text(tMinutesTillTrain),
+        $("<td class='mins text-center' id='tilTrain'> data-key="+snapshot.key+"").text(tMinutesTillTrain),
         $("<td class='text-center'><i class='far fa-edit edit' id='editIcon'></i></td>"),
         $("<td class='text-center'><i class='far fa-save btn_save' id='saveIcon'></i></td>"),
         $("<td class='text-center'><i class='fas fa-eject btn_cancel' id='cancelIcon'></i></td>"),
@@ -124,19 +119,6 @@ database.ref().on("child_added", function(snapshot) {
     $("#trainTable").append(tableRow);
 });
 
-
-$(document).on("click",".edit", function(event) {
-  let currKey = $(this).attr("data-key");
-  let trainRef=database.ref(currKey);
- // trainRef.remove();
-  $(this).closest('tr').val(function( i, val ) {
-    return val;
-  });
-}); 
-
-
-
-
 // Deletes data from Firebase and website
 $(document).on("click",".trash", function(event) {
     let currKey = $(this).attr("data-key");
@@ -145,10 +127,13 @@ $(document).on("click",".trash", function(event) {
     $(this).closest('tr').remove()
 });
 
-
 // Edit, Save & Cancel Button Functionality
 $(document).ready(function($)
 {
+  $(document).on("click",".edit", function(event) {
+    let currKey = $(this).attr("data-key");
+    let trainRef=database.ref(currKey);
+
 	var random_id = function  () 
 	{
 		var id_num = Math.random().toString(9).substr(2,3);
@@ -156,8 +141,6 @@ $(document).ready(function($)
 		
 		return id_num + id_str;
 	}
-
-
 
 	//--->make div editable > start
 	$(document).on('click', '.row_data', function(event) 
@@ -169,62 +152,14 @@ $(document).ready(function($)
 			return false; 
 		}
 
-		//make div editable
-	//	$(this).closest('div').attr('contenteditable', 'true');
-		//add bg css
-	//	$(this).addClass('bg-warning').css('padding','5px');
-
-	//	$(this).focus();
 	})	
-	//--->make div editable > end
 
-
-	//--->save single field data > start
-/*	$(document).on('focusout', '.row_data', function(event) 
-	{
-		event.preventDefault();
-
-		if($(this).attr('edit_type') == 'button')
-		{
-			return false; 
-		}
-
-		var row_id = $(this).closest('tr').attr('row_id'); 
-		
-		var row_div = $(this)				
-		.removeClass('bg-warning') //add bg css
-		.css('padding','')
-
-		var col_name = row_div.attr('col_name'); 
-		var col_val = row_div.html(); 
-
-		var arr = {};
-		arr[col_name] = col_val;
-
-		//use the "arr"	object for your ajax call
-		$.extend(arr, {row_id:row_id});
-
-		//out put to show
-		$('.post_msg').html( '<pre class="bg-success">'+JSON.stringify(arr, null, 2) +'</pre>');
-		
-	})	
-	//--->save single field data > end */
-
- 
 	//--->button > edit > start	
 	$(document).on('click', '.edit', function(event) 
 	{
 		event.preventDefault();
 		var tbl_row = $(this).closest('tr');
 
-	//	var row_id = tbl_row.attr('row_id');
-
-    
-		//tbl_row.find('.btn_save').show();
-		//tbl_row.find('.btn_cancel').show();
-
-		//hide edit button
-		//tbl_row.find('.edit').hide(); 
 
 		//make the whole row editable
 		tbl_row.find('.row_data')
@@ -242,24 +177,13 @@ $(document).ready(function($)
 		//--->add the original entry > end
 
 	});
-	//--->button > edit > end
-
-
+	
 	//--->button > cancel > start	
 	$(document).on('click', '.btn_cancel', function(event) 
 	{
 		event.preventDefault();
 
 		var tbl_row = $(this).closest('tr');
-
-//		var row_id = tbl_row.attr('row_id');
-
-		//hide save and cacel buttons
-		//tbl_row.find('.btn_save').hide();
-	//	tbl_row.find('.btn_cancel').hide();
-
-		//show edit button
-		//tbl_row.find('.edit').show();
 
 		//make the whole row editable
 		tbl_row.find('.row_data')
@@ -272,9 +196,7 @@ $(document).ready(function($)
 			$(this).html( $(this).attr('original_entry') ); 
 		});  
 	});
-	//--->button > cancel > end
 
-	
 	//--->save whole row entery > start	
 	$(document).on('click', '.btn_save', function(event) 
 	{
@@ -282,15 +204,6 @@ $(document).ready(function($)
 		var tbl_row = $(this).closest('tr');
 
 		var row_id = tbl_row.attr('row_id');
-
-		
-		//hide save and cacel buttons
-		//tbl_row.find('.btn_save').hide();
-	//	tbl_row.find('.btn_cancel').hide();
-
-		//show edit button
-	//	tbl_row.find('.edit').show();
-
 
 		//make the whole row editable
 		tbl_row.find('.row_data')
@@ -311,12 +224,22 @@ $(document).ready(function($)
 		//use the "arr"	object for your ajax call
 		$.extend(arr, {row_id:row_id});
 
+   
+  /*  database.ref().update({
+      trainName,
+      destination,
+      frequency
+  }); */
+
+ 
+
 		//out put to show
 		$('.post_msg').html( '<pre class="bg-success">'+JSON.stringify(arr, null, 2) +'</pre>')
 		 
 
 	});
-	//--->save whole row entery > end
+
+}); 
 
 
 }); 
