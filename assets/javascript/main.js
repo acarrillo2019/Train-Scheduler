@@ -170,11 +170,11 @@ $(document).ready(function($)
 		}
 
 		//make div editable
-		$(this).closest('div').attr('contenteditable', 'true');
+	//	$(this).closest('div').attr('contenteditable', 'true');
 		//add bg css
-		$(this).addClass('bg-warning').css('padding','5px');
+	//	$(this).addClass('bg-warning').css('padding','5px');
 
-		$(this).focus();
+	//	$(this).focus();
 	})	
 	//--->make div editable > end
 
@@ -217,7 +217,7 @@ $(document).ready(function($)
 		event.preventDefault();
 		var tbl_row = $(this).closest('tr');
 
-		var row_id = tbl_row.attr('row_id');
+	//	var row_id = tbl_row.attr('row_id');
 
     
 		//tbl_row.find('.btn_save').show();
@@ -252,7 +252,7 @@ $(document).ready(function($)
 
 		var tbl_row = $(this).closest('tr');
 
-		var row_id = tbl_row.attr('row_id');
+//		var row_id = tbl_row.attr('row_id');
 
 		//hide save and cacel buttons
 		//tbl_row.find('.btn_save').hide();
@@ -263,7 +263,7 @@ $(document).ready(function($)
 
 		//make the whole row editable
 		tbl_row.find('.row_data')
-		.attr('edit_type', 'click')
+	//	.attr('edit_type', 'click')
 		.removeClass('bg-warning')
 		.css('padding','') 
 
